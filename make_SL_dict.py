@@ -14,7 +14,23 @@ import matplotlib.pyplot as plt
 from subprocess import Popen, PIPE
 from io import open
 
-#
+from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter
+parser = ArgumentParser(
+    description=__doc__, formatter_class=ArgumentDefaultsHelpFormatter
+)
+parser.add_argument(
+    "--fitdiag_folder",
+    dest="fitdiag_folder",
+    help="Folder that contain the fitdiagnosis.root file(s)",
+    )
+parser.add_argument(
+    "--output_dict",
+    dest="output_dict",
+    help="Full path for output Dictionary",
+    )
+args = parser.parse_args()
+
+
 list_SL_cards = [
     [
         "DY",
@@ -81,32 +97,14 @@ list_SL_cards = [
         "others node"
     ],
 ]
-fitdiagDL = "/afs/cern.ch/work/a/acarvalh/public/to_HH_bbWW/datacard_TLL_27Jan2020/fitdiag/"
+fitdiagDL = args.fitdiag_folder
 
-"""
-
-hadd fitDiagnostics_shapes_combine_DY_2018.root fitDiagnostics_shapes_combine_DY_boosted_2018.root fitDiagnostics_shapes_combine_DY_resolved_2018.root
-
-hadd fitDiagnostics_shapes_combine_HH_2018.root fitDiagnostics_shapes_combine_HH_boosted_2018.root fitDiagnostics_shapes_combine_HH_resolved_1b_2018.root fitDiagnostics_shapes_combine_HH_resolved_2b_nonvbf_2018.root fitDiagnostics_shapes_combine_HH_resolved_2b_vbf_2018.root
-
-hadd fitDiagnostics_shapes_combine_SingleTop_TT_2018.root fitDiagnostics_shapes_combine_SingleTop_boosted_2018.root fitDiagnostics_shapes_combine_SingleTop_resolved_2018.root fitDiagnostics_shapes_combine_TT_boosted_2018.root fitDiagnostics_shapes_combine_TT_resolved_2018.root
-
-hadd fitDiagnostics_shapes_combine_SingleTop_2018.root fitDiagnostics_shapes_combine_SingleTop_boosted_2018.root fitDiagnostics_shapes_combine_SingleTop_resolved_2018.root
-
-hadd fitDiagnostics_shapes_combine_TT_2018.root fitDiagnostics_shapes_combine_TT_boosted_2018.root fitDiagnostics_shapes_combine_TT_resolved_2018.root
-
-hadd fitDiagnostics_shapes_combine_W_2018.root fitDiagnostics_shapes_combine_W_boosted_2018.root fitDiagnostics_shapes_combine_W_resolved_2018.root
-
-hadd fitDiagnostics_shapes_combine_W_other_2018.root fitDiagnostics_shapes_combine_W_boosted_2018.root fitDiagnostics_shapes_combine_W_resolved_2018.root fitDiagnostics_shapes_combine_Other_2018.root
-"""
-dictionary = "%s/dict_SL.dat" % fitdiagDL
+dictionary = args.output_dict #"%s/dict_SL.dat" % fitdiagDL
 ff = open(dictionary, "w")
 ff.write(unicode('{\n'))
 
 for tt, teste_class in enumerate(list_SL_cards) :
     for ee, era in enumerate([2016, 2017, 2018]) :
-        #if tt > 0 : continue
-        #if ee > 0 : continue
         print(teste_class[0])
         if era == 2018 :
             continue
