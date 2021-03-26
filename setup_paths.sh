@@ -43,7 +43,7 @@ setup() {
   #########################
   # those are for launch postfit plots -- naming is needed
 
-  export SL_BKG_only='/afs/cern.ch/work/a/acarvalh/public/to_HH_bbWW/freze2_March19/round2/datacard_sl_BKGonly.txt'
+  export SL_BKG_only='/afs/cern.ch/work/a/acarvalh/public/to_HH_bbWW/freze2_March19/round2/datacards/datacard_sl_BKGonly.txt'
   export DL_BKG_only='/afs/cern.ch/work/a/acarvalh/public/to_HH_bbWW/freze2_March19/round2/datacards/datacard_dl_BKGonly.txt'
   export ALL_BKG_only='/afs/cern.ch/work/a/acarvalh/public/to_HH_bbWW/freze2_March19/round2/datacards/datacard_BKGonly.txt'
 
