@@ -3,8 +3,8 @@ import os, subprocess, sys
 from subprocess import Popen, PIPE
 
 
-mom = "/afs/cern.ch/work/a/acarvalh/public/to_HH_bbWW/freze2_March19/round1/"
-FolderOut = "/afs/cern.ch/work/a/acarvalh/public/to_HH_bbWW/freze2_March19/round1/fitdiag2/"
+mom = "/afs/cern.ch/work/a/acarvalh/public/to_HH_bbWW/freze2_March19/round2/datacards/"
+FolderOut = "/afs/cern.ch/work/a/acarvalh/public/to_HH_bbWW/freze2_March19/round2/fitdiag2/"
 
 #mom = "/home/acaan/bbww_cards_feezingMar2021_Aachen/round1/"
 #FolderOut = "/home/acaan/bbww_cards_feezingMar2021_Aachen/fitdiag2/"
@@ -34,25 +34,17 @@ list_DL_cards = [
 list_SL_cards = [
     "all_boosted_sr_dnn_node_class_HHGluGlu_NLO",
     "all_boosted_sr_dnn_node_class_HHVBF_NLO",
-    "all_boosted_sr_dnn_node_class_other",
     "all_boosted_sr_dnn_node_H",
-    "all_boosted_sr_dnn_node_st",
-    "all_boosted_sr_dnn_node_tt",
-    "all_boosted_sr_dnn_node_wjets",
+    "all_incl_sr_dnn_node_class_other",
+    "all_incl_sr_dnn_node_st",
+    "all_incl_sr_dnn_node_tt",
+    "all_incl_sr_dnn_node_wjets",
     "all_resolved_1b_sr_dnn_node_class_HHGluGlu_NLO",
     "all_resolved_1b_sr_dnn_node_class_HHVBF_NLO",
-    "all_resolved_1b_sr_dnn_node_class_other",
     "all_resolved_1b_sr_dnn_node_H",
-    "all_resolved_1b_sr_dnn_node_st",
-    "all_resolved_1b_sr_dnn_node_tt",
-    "all_resolved_1b_sr_dnn_node_wjets",
     "all_resolved_2b_sr_dnn_node_class_HHGluGlu_NLO",
     "all_resolved_2b_sr_dnn_node_class_HHVBF_NLO",
-    "all_resolved_2b_sr_dnn_node_class_other",
     "all_resolved_2b_sr_dnn_node_H",
-    "all_resolved_2b_sr_dnn_node_st",
-    "all_resolved_2b_sr_dnn_node_tt",
-    "all_resolved_2b_sr_dnn_node_wjets",
 ]
 
 cmdTot = "combineCards.py "
@@ -70,15 +62,16 @@ for channel in ["dl", "sl"] :
     for era in ["2016", "2017", "2018"] :
         #if not era == "2016" : continue
         for bin in list_bins :
-            full_path_card = "%s/%s_%s/%s/datacard.txt" % (mom, channel, era, bin)
+            full_path_card = "%s/%s_%s_%s/datacard.txt" % (mom, channel, era, bin)
             print(full_path_card)
-            full_path_card_renamedBin = "%s/%s_%s/%s/datacard_renamedBin.txt" % (mom, channel, era, bin)
+            full_path_card_renamedBin = "%s/%s_%s_%s/datacard_renamedBin.txt" % (mom, channel, era, bin)
             renamedBin = "%s_%s_%s" % (channel, era, bin)
 
             cmd = "combineCards.py "
             cmd += "%s=%s " % (renamedBin, full_path_card)
             cmd += ">  %s" % (full_path_card_renamedBin)
             #runCombineCmd(cmd)
+            #print (full_path_card_renamedBin)
 
             cmd = "combineTool.py -M FitDiagnostics "
             cmd += " %s" % full_path_card_renamedBin
@@ -86,12 +79,12 @@ for channel in ["dl", "sl"] :
             #    cmd += " -t -1 "
             cmd += " --saveShapes --saveWithUncertainties "
             cmd += " --saveNormalization "
-            #cmd += " --skipBOnlyFit "
+            cmd += " --skipBOnlyFit "
             #cmd += " -v 2 "
             cmd += "  --setParameters r=0 --freezeParameters r "
             cmd += " -n _shapes_combine_%s" % renamedBin
             cmd += " --job-mode condor --sub-opt '+MaxRuntime = 54000' --task-name %s" % renamedBin
-            #runCombineCmd(cmd, FolderOut)
+            runCombineCmd(cmd, FolderOut)
 
             if 0 > 1 :
                 ########
@@ -108,7 +101,7 @@ for channel in ["dl", "sl"] :
                 #cmd2 += "--partition=small "
                 cmd2 += jobfile
                 #print(cmd2)
-                runCombineCmd(cmd2)
+                #runCombineCmd(cmd2)
                 ########
 
             cmdTot += "%s=%s " % (renamedBin, full_path_card)
