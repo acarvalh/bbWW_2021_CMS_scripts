@@ -14,7 +14,19 @@ The purpose of this script is to:
 - submit one fitDiagnosis by card / following bin naming that goes with the plot dictionary maker on this same folder
 - plot law-implemented plots from the fitdiag by card
 
-Example of usage ()
+
+Ideally you run with:
+--submit_fitdiag_by_card  law
+
+After all jobs done:
+
+--submit_fitdiag_by_card law_collect
+
+1) To collect fitdiag/workspaces root files to do the plots after (and check if all done, if not done resubmit)
+
+2) To do NLL scans of systematics
+
+Example of usage:
 
 python /afs/cern.ch/work/a/acarvalh/HH_inference/bbWW_2021_CMS_scripts/run_prefit_freeze3_TLL.py \
 --cards_original  "/afs/cern.ch/work/a/acarvalh/HH_inference/fits_bbWW/TLL_splitted_bins/" \
@@ -22,70 +34,6 @@ python /afs/cern.ch/work/a/acarvalh/HH_inference/bbWW_2021_CMS_scripts/run_prefi
 --submit_fitdiag_by_card law_collect \
 --only_era 2016 --university TLL
 
-Ideally you run with:
-law
-
-After all jobs done:
-
-1) To collect root files to do the plots after (and check if all done)
-law_collect
-
-2) To do NLL scans of systematics
-
-
-/eos/user/a/acarvalh/bbWW_fullRun2_results/round3_results/prefit_plots/make_DL_dict_Aa.py
-
-law run PlotNuisanceLikelihoodScans \
-    --version dev \
-    --datacards $DHI_EXAMPLE_CARDS \
-    --parameters-per-page 20 --only-parameters "CMS*JES*" --y-log
-
-
-=================
-While 2017 root files are all ready, most of 2018 and 2016 crashed
-(will check why, but was 48h job runtime -- Aa ones takes at maximum 3h)
---print-status
-
-
-law run PlotNuisanceLikelihoodScans  --version  TLL_SM_lbn_2l_0tau_2017_TT_resolved --datacards SM_lbn_2l_0tau_2017_TT_resolved=/afs/cern.ch/work/a/acarvalh/HH_inference/fits_bbWW/TLL_splitted_bins//DL/bb2l_2017/SM_lbn_2l_0tau_2017_TT_resolved.txt  --pois r --parameters-per-page 20 --only-parameters "CMS*JES*" --y-log --FitDiagnostics-no-poll --FitDiagnostics-workflow htcondor --FitDiagnostics-max-runtime 48 --print-status 4
-
-ls /afs/cern.ch/work/a/acarvalh/HH_inference/fits_bbWW/running_fits/FitDiagnostics/HHModelPinv__model_default/datacards_*/m125.0/poi_r/*0tau*/
-
-ls /afs/cern.ch/work/a/acarvalh/HH_inference/fits_bbWW/running_fits/FitDiagnostics/HHModelPinv__model_default/datacards_*/m125.0/poi_r/TLL*0tau*/
-
-ls /afs/cern.ch/work/a/acarvalh/HH_inference/fits_bbWW/running_fits/CreateWorkspace/HHModelPinv__model_default/datacards_*/m125.0/TLL*0tau*/
-                                                         $DHI_STORE/CreateWorkspace/HHModelPinv__model_default/datacards_920aee2b0b/m125.0/TLL_SM_lbn_2l_0tau_2016_DY_boosted/workspace.root
-9363.pts-151.lxplus736
-757.pts-14.lxplus710
-11933.pts-151.lxplus736
-
-/afs/cern.ch/work/a/acarvalh/HH_inference/fits_bbWW/running_fits/FitDiagnostics/HHModelPinv__model_default/datacards_fd5a19cd31/m125.0/poi_r/TLL_SM_lbn_2l_0tau_2017_SingleTop_resolved/fitdiagnostics__poi_r__params_r1.0_r_qqhh1.0_r_gghh1.0_kl1.0_kt1.0_CV1.0_C2V1.0.root
-
-
-===========================================
-python /afs/cern.ch/work/a/acarvalh/HH_inference/bbWW_2021_CMS_scripts/run_prefit_freeze3_TLL.py --cards_original  "/afs/cern.ch/work/a/acarvalh/HH_inference/fits_bbWW/TLL_splitted_bins/" --fitdiag_folder /eos/user/a/acarvalh/bbWW_fullRun2_results/round3_results/prefit_plots/DL_TLL/fitdiag2/ --submit_fitdiag_by_card law --only_channel dl --only_era 2016
-
-python /afs/cern.ch/work/a/acarvalh/HH_inference/bbWW_2021_CMS_scripts/run_prefit_freeze3_TLL.py --cards_original  "/afs/cern.ch/work/a/acarvalh/HH_inference/fits_bbWW/TLL_splitted_bins/" --fitdiag_folder /eos/user/a/acarvalh/bbWW_fullRun2_results/round3_results/prefit_plots/DL_TLL/fitdiag2/ --submit_fitdiag_by_card law --only_channel dl --only_era 2017
-
-python /afs/cern.ch/work/a/acarvalh/HH_inference/bbWW_2021_CMS_scripts/run_prefit_freeze3_TLL.py --cards_original  "/afs/cern.ch/work/a/acarvalh/HH_inference/fits_bbWW/TLL_splitted_bins/" --fitdiag_folder /eos/user/a/acarvalh/bbWW_fullRun2_results/round3_results/prefit_plots/DL_TLL/fitdiag2/ --submit_fitdiag_by_card law --only_channel dl --only_era 2018
-
-python /afs/cern.ch/work/a/acarvalh/HH_inference/bbWW_2021_CMS_scripts/run_prefit_freeze3_TLL.py --cards_original  "/afs/cern.ch/work/a/acarvalh/HH_inference/fits_bbWW/TLL_splitted_bins/" --fitdiag_folder /eos/user/a/acarvalh/bbWW_fullRun2_results/round3_results/prefit_plots/DL_TLL/fitdiag2/ --submit_fitdiag_by_card law --only_channel sl --only_era 2016
-
-python /afs/cern.ch/work/a/acarvalh/HH_inference/bbWW_2021_CMS_scripts/run_prefit_freeze3_TLL.py --cards_original  "/afs/cern.ch/work/a/acarvalh/HH_inference/fits_bbWW/TLL_splitted_bins/" --fitdiag_folder /eos/user/a/acarvalh/bbWW_fullRun2_results/round3_results/prefit_plots/DL_TLL/fitdiag2/ --submit_fitdiag_by_card law --only_channel sl --only_era 2017
-
-python /afs/cern.ch/work/a/acarvalh/HH_inference/bbWW_2021_CMS_scripts/run_prefit_freeze3_TLL.py --cards_original  "/afs/cern.ch/work/a/acarvalh/HH_inference/fits_bbWW/TLL_splitted_bins/" --fitdiag_folder /eos/user/a/acarvalh/bbWW_fullRun2_results/round3_results/prefit_plots/DL_TLL/fitdiag2/ --submit_fitdiag_by_card law --only_channel sl --only_era 2018
-
-law run FitDiagnostics  --version  TLL_SM_lbn_2l_0tau_2016_DY_boosted_data --datacards SM_lbn_2l_0tau_2016_DY_boosted=/afs/cern.ch/work/a/acarvalh/HH_inference/fits_bbWW/TLL_splitted_bins//DL/bb2l_2016/SM_lbn_2l_0tau_2016_DY_boosted.txt  --pois r  --unblinded --PullsAndImpacts-custom-args='--X-rtd MINIMIZER_no_analytic'  --FitDiagnostics-no-poll --FitDiagnostics-workflow htcondor --FitDiagnostics-max-runtime 48
-
-
-law run PlotNuisanceLikelihoodScans  --version  TLL_SM_lbn_2l_0tau_2016_DY_boosted --datacards SM_lbn_2l_0tau_2016_DY_boosted=/afs/cern.ch/work/a/acarvalh/HH_inference/fits_bbWW/TLL_splitted_bins//DL/bb2l_2016/SM_lbn_2l_0tau_2016_DY_boosted.txt  --pois r  --FitDiagnostics-no-poll --FitDiagnostics-workflow htcondor --FitDiagnostics-max-runtime 48
-
-
-----
-
-python /afs/cern.ch/work/a/acarvalh/HH_inference/bbWW_2021_CMS_scripts/run_prefit_freeze3_TLL.py --cards_original  "/afs/cern.ch/work/a/acarvalh/HH_inference/fits_bbWW/TLL_splitted_bins/" --fitdiag_folder /eos/user/a/acarvalh/bbWW_fullRun2_results/round3_results/prefit_plots/DL_TLL/fitdiag2/ --submit_fitdiag_by_card nuissances --only_channel dl --only_era 2016
-
-  PlotNuisanceLikelihoodScans(version=TLL_SM_lbn_2l_0tau_2016_DY_boosted, hh_model=HHModelPinv.model_default, datacards=hash:920aee2b0b, mass=125.0, parameter_values=, pois=r, frozen_parameters=, frozen_groups=, unblinded=False, y_log=False, parameters_per_page=1)
 """
 def runCombineCmd(combinecmd, outfolder='.', print_command=False, saveout=None):
     if print_command : print ("Command: ", combinecmd)
