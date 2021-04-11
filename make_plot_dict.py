@@ -2,6 +2,21 @@
 import os, subprocess, sys
 from subprocess import Popen, PIPE
 
+
+"""
+Examples of commands:
+
+python /afs/cern.ch/work/a/acarvalh/HH_inference/bbWW_2021_CMS_scripts/make_plot_dict.py \
+--fitdiag_folder /eos/user/a/acarvalh/bbWW_fullRun2_results/round3_results/prefit_plots/TLL/fitdiag2/  \
+--output_dict /eos/user/a/acarvalh/bbWW_fullRun2_results/round3_results/prefit_plots/TLL/dict_SL_bkg.dat \
+--only_bkg --only_chanel sl
+
+python dhi/scripts/postfit_plots.py \
+--output_folder /eos/user/a/acarvalh/bbWW_fullRun2_results/round3_results/prefit_plots/TLL/plots/SL/ \
+--plot_options_dict /eos/user/a/acarvalh/bbWW_fullRun2_results/round3_results/prefit_plots/TLL/dict_SL_bkg.dat \
+--unblind
+
+"""
 from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter
 parser = ArgumentParser(
     description=__doc__, formatter_class=ArgumentDefaultsHelpFormatter
@@ -140,6 +155,17 @@ for channel in ["dl", "sl"] :
         skiped = False
         for bin in teste_class[1] :
             if 0 > 1 : skiped = True
+            if channel == "dl" and teste_class[0] == "ttnode" and era == "2017" : skiped = True
+            if channel == "dl" and teste_class[0] == "ttnode" and era == "2016" : skiped = True
+            if channel == "dl" and  teste_class[0] == "wjetsnode" and era == "2016" : skiped = True
+            if channel == "dl" and  teste_class[0] == "wjetsnode" and era == "2017" : skiped = True
+            if channel == "dl" and  teste_class[0] == "wjetsnode" and era == "2018" : skiped = True
+            if channel == "sl" and teste_class[0] == "ttnode" and era == "2016" : skiped = True
+            if channel == "sl" and teste_class[0] == "ttnode" and era == "2017" : skiped = True
+            if channel == "sl" and teste_class[0] == "ttnode" and era == "2018" : skiped = True
+            if channel == "sl" and teste_class[0] == "stnode" and era == "2018" : skiped = True
+            if channel == "sl" and teste_class[0] == "stnode" and era == "2017" : skiped = True
+            if channel == "sl" and teste_class[0] == "stnode" and era == "2016" : skiped = True
         if skiped : continue
 
         if ".root" in fitdiagDL :
@@ -199,11 +225,13 @@ for channel in ["dl", "sl"] :
             ('Other_bbWW',  {'color' : 205, 'fillStype' : 1001, 'label' : 'others',          'make border' : True}),
             ('VV',          {'color' : 208, 'fillStype' : 1001, 'label' : 'none',            'make border' : False}),
             ('vvv',         {'color' : 208, 'fillStype' : 1001, 'label' : 'VVV + VV',        'make border' : True}),
+            ('VVV',         {'color' : 208, 'fillStype' : 1001, 'label' : 'VVV + VV',        'make border' : True}),
             ('ttZ',         {'color' : 9, 'fillStype' : 1001, 'label' : 'none',              'make border' : False}),
             ('ttW',         {'color' : 9, 'fillStype' : 1001, 'label' : 'none',              'make border' : False}),
             ('ttVV',        {'color' : 9, 'fillStype' : 1001, 'label' : 'ttW + ttZ + ttVV',  'make border' : True}),
             ('Fakes',       {'color' :  12, 'fillStype' : 3345, 'label' : 'Fakes',           'make border' : True}),
             ('DY',          {'color' : 221, 'fillStype' : 1001, 'label' : 'DY',              'make border' : True}),
+            ('data_DY',          {'color' : 221, 'fillStype' : 1001, 'label' : 'DY',              'make border' : True}),
             ('ST',          {'color' : 822, 'fillStype' : 1001, 'label' : 'single top',      'make border' : True}),
             ('WJets',       {'color' : 209, 'fillStype' : 1001, 'label' : 'W + jets',          'make border' : True}),
             ('TT',          {'color' : 17, 'fillStype'  : 1001, 'label' : 't#bar{t} + jets', 'make border' : True}),
