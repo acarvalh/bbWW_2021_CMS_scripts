@@ -28,9 +28,9 @@ After all jobs done:
 
 Example of usage:
 
-python /afs/cern.ch/work/a/acarvalh/HH_inference/bbWW_2021_CMS_scripts/run_prefit_freeze3_TLL.py \
+python /afs/cern.ch/work/a/acarvalh/HH_inference/bbWW_2021_CMS_scripts/run_prefit_law.py \
 --cards_original  "/afs/cern.ch/work/a/acarvalh/HH_inference/fits_bbWW/TLL_splitted_bins/" \
---fitdiag_folder /eos/user/a/acarvalh/bbWW_fullRun2_results/round3_results/prefit_plots/DL_TLL/fitdiag_blinded/ \
+--fitdiag_folder /eos/user/a/acarvalh/bbWW_fullRun2_results/round3_results/prefit_plots/TLL/fitdiag_blinded/ \
 --submit_fitdiag_by_card law_collect \
 --only_era 2016 --university TLL
 
@@ -186,8 +186,8 @@ for channel in ["dl", "sl"] :
 
             if not submit_fitdiag_by_card == "none" :
                 if "law" in submit_fitdiag_by_card :
-                    #version = "TLL_%s_data" % renamedBin
-                    version = "TLL_%s" % renamedBin
+                    version = "TLL_%s_data" % renamedBin
+                    #version = "TLL_%s" % renamedBin
                     cmd = "law run FitDiagnostics "
                     cmd += " --version  %s" % version
                     cmd += " --datacards %s=%s " % (renamedBin, full_path_card_renamedBin)
@@ -200,23 +200,39 @@ for channel in ["dl", "sl"] :
                     elif submit_fitdiag_by_card == "law_collect" :
                         # print-satatus 0 is not the root file, so we need to use the actual path to paste
                         #    cmd += " --fetch-output 0" ## the output is not the .root, that does not work
-                        law_fitdiag_result_pattern = "%s/FitDiagnostics/HHModelPinv__model_default/datacards_*/m125.0/poi_r/%s/fitdiagnostics__poi_r__params_r1.0_r_qqhh1.0_r_gghh1.0_kl1.0_kt1.0_CV1.0_C2V1.0.root" % (os.environ["DHI_STORE"], version)
+                        law_fitdiag_result_pattern = "%s/FitDiagnostics/HHModelPinv__model_default/datacards_*/m125.0/poi_r/%s/fitdiagnostics*.root" % (os.environ["DHI_STORE"], version)
                         law_ws_result_pattern = "%s/CreateWorkspace/HHModelPinv__model_default/datacards_*/m125.0/%s/workspace.root" % (os.environ["DHI_STORE"], version)
+                        law_fitdiag_result = "none"
+                        law_ws_result = "none"
+                        print(law_fitdiag_result_pattern)
                         for result in [law_fitdiag_result_pattern, law_ws_result_pattern] :
                             fileShapes = glob.glob(result)
-                            if not len(fileShapes) == 1 :
-                                print("WARNING: found %s fitdiagnosis (if more delete one, if less resubmit) for bin %s") % (str(len(fileShapes)), renamedBin)
-                                for ff in fileShapes : print(ff)
-                                if len(fileShapes) == 0 :
-                                    runCombineCmd(cmd, FolderOut, print_command=True)
-                            else :
-                                file_final = "%s/fitdiagnostics_%s.root" % (FolderOut, renamedBin)
-                                print("Copying result of %s to fitdiagnostics_%s.root in fitdiag_folder") % (renamedBin, renamedBin)
-                                runCombineCmd("cp %s %s" % (fileShapes[0], file_final))
-                                if "FitDiagnostics" in result : law_fitdiag_result = fileShapes[0]
-                                if "CreateWorkspace" in result : law_ws_result = fileShapes[0]
+
+                            if "FitDiagnostics" in result :
+                                if not len(fileShapes) == 1 :
+                                    print("WARNING: found %s fitdiagnosis (if more delete one, if less resubmit) for bin %s") % (str(len(fileShapes)), renamedBin)
+                                    for ff in fileShapes : print(ff)
+                                    #if len(fileShapes) == 0 :
+                                    #    runCombineCmd(cmd, FolderOut, print_command=True)
+                                else :
+                                    law_fitdiag_result = fileShapes[0]
+                                    file_final = "%s/fitdiagnostics_%s.root" % (FolderOut, renamedBin)
+                                    print("Copying result of %s to fitdiagnostics_%s.root in fitdiag_folder") % (renamedBin, renamedBin)
+                                    runCombineCmd("cp %s %s" % (fileShapes[0], file_final))
+                                    #print(law_fitdiag_result, len(fileShapes))
+                            if "CreateWorkspace" in result :
+                                if not len(fileShapes) == 1 :
+                                    print("WARNING: found %s WS (if more delete one, if less resubmit) for bin %s") % (str(len(fileShapes)), renamedBin)
+                                    for ff in fileShapes : print(ff)
+                                else :
+                                    law_ws_result = fileShapes[0]
+                                    file_final = "%s/workspace_%s.root" % (FolderOut, renamedBin)
+                                    print("Copying result of %s to workspace_%s.root in fitdiag_folder") % (renamedBin, renamedBin)
+                                    runCombineCmd("cp %s %s" % (fileShapes[0], file_final))
+
+                        if law_fitdiag_result == "none" : continue
                         # to repeat the coommand does not always work, so we do the plot standalone
-                        save_plot = "%s/NLL_JES_%s.png" % (FolderOut, renamedBin)
+                        save_plot = "%s/NLL_JES_%s.pdf" % (FolderOut, renamedBin)
                         only_parameters="CMS*JES*"
                         parameters_per_page=15
                         y_log=False
@@ -236,8 +252,8 @@ for channel in ["dl", "sl"] :
                             only_parameters=only_parameters,
                             parameters_per_page=parameters_per_page,
                             scan_points=101,
-                            x_min=-2.,
-                            x_max=2,
+                            x_min=-4.,
+                            x_max=4,
                             y_log=False,
                             model_parameters=None,
                             campaign=None,
