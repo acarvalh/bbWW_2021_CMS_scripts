@@ -30,7 +30,7 @@ Example of usage:
 
 python /afs/cern.ch/work/a/acarvalh/HH_inference/bbWW_2021_CMS_scripts/run_prefit_law.py \
 --cards_original  "/afs/cern.ch/work/a/acarvalh/HH_inference/fits_bbWW/TLL_splitted_bins/" \
---fitdiag_folder /eos/user/a/acarvalh/bbWW_fullRun2_results/round3_results/prefit_plots/TLL/fitdiag_blinded/ \
+--fitdiag_folder /eos/user/a/acarvalh/bbWW_fullRun2_results/round3_results/prefit_plots/TLL/fitdiag2/ \
 --submit_fitdiag_by_card law_collect \
 --only_era 2016 --university TLL
 
@@ -111,8 +111,10 @@ FolderOut = args.fitdiag_folder
 mom_original = args.cards_original
 submit_fitdiag_by_card = args.submit_fitdiag_by_card
 only_chanel = args.only_chanel
+university = args.university
+print(args.university == "LLR" , args.university , "LLR" )
 
-if args.university == "TLL" :
+if university == "TLL" :
     list_DL_cards = [
      "DL/bb2l_ERA/SM_lbn_2l_0tau_ERA_DY_boosted",
      "DL/bb2l_ERA/SM_lbn_2l_0tau_ERA_DY_resolved",
@@ -144,6 +146,64 @@ if args.university == "TLL" :
      "SL/ERA/SM_lbn_1l_0tau_ERA_W_boosted",
      "SL/ERA/SM_lbn_1l_0tau_ERA_W_resolved",
     ]
+elif "UCL" in university   :
+    list_DL_cards = [
+    "outputcard_boosted_GGF_bbWW_nonres_none",
+    "outputcard_boosted_H_bbWW_nonres_none",
+    "outputcard_boosted_VBF_bbWW_nonres_none",
+    "outputcard_DY_VVV_bbWW_nonres_none",
+    "outputcard_resolved1b_GGF_bbWW_nonres_none",
+    "outputcard_resolved1b_H_bbWW_nonres_none",
+    "outputcard_resolved1b_VBF_bbWW_nonres_none",
+    "outputcard_resolved2b_GGF_bbWW_nonres_none",
+    "outputcard_resolved2b_H_bbWW_nonres_none",
+    "outputcard_resolved2b_VBF_bbWW_nonres_none",
+    "outputcard_TT_ST_TTVX_Rare_bbWW_nonres_none"
+    ]
+    list_SL_cards = []
+elif  university == "RWTH"   :
+    list_SL_cards = [
+    #"all_boosted_sr_prompt_dnn_node_class_HHGluGlu_NLO",
+    #"all_boosted_sr_prompt_dnn_node_class_HHVBF_NLO",
+    "all_boosted_sr_prompt_dnn_node_H",
+    #"all_incl_sr_prompt_dnn_node_class_other",
+    #"all_incl_sr_prompt_dnn_node_wjets",
+    #"all_incl_sr_prompt_top",
+    #"all_resolved_1b_sr_prompt_dnn_node_class_HHGluGlu_NLO",
+    #"all_resolved_1b_sr_prompt_dnn_node_class_HHVBF_NLO",
+    "all_resolved_1b_sr_prompt_dnn_node_H",
+    #"all_resolved_2b_sr_prompt_dnn_node_class_HHGluGlu_NLO",
+    #"all_resolved_2b_sr_prompt_dnn_node_class_HHVBF_NLO",
+    #"all_resolved_2b_sr_prompt_dnn_node_H"
+    ]
+
+    list_DL_cards = [
+    "all_boosted_1b_sr_dnn_node_class_HHGluGlu_NLO",
+    "all_boosted_1b_sr_dnn_node_class_HHVBF_NLO",
+    "all_boosted_1b_sr_dnn_node_H",
+    "all_incl_sr_type2_dy_vv",
+    "all_boosted_1b_sr_type2_dy_vv",
+    "all_resolved_sr_type2_dy_vv",
+    #"all_incl_sr_type2_other",
+    #"all_resolved_1b_sr_dnn_node_class_HHGluGlu_NLO",
+    #"all_resolved_1b_sr_dnn_node_class_HHVBF_NLO",
+    #"all_resolved_1b_sr_dnn_node_H",
+    #"all_resolved_2b_sr_dnn_node_class_HHGluGlu_NLO",
+    #"all_resolved_2b_sr_dnn_node_class_HHVBF_NLO",
+    #"all_resolved_2b_sr_dnn_node_H",
+    "all_incl_sr_dnn_node_H"
+    ]
+elif "RWTH_split" in university   :
+    list_SL_cards = [
+    "all_boosted_sr_prompt_dnn_node_class_other",
+    "all_boosted_sr_prompt_dnn_node_wjets",
+    "all_boosted_sr_prompt_top",
+    "all_resolved_sr_prompt_dnn_node_class_other",
+    "all_resolved_sr_prompt_dnn_node_wjets",
+    "all_resolved_sr_prompt_top",
+    ]
+
+
 
 cmdTot = "combineCards.py "
 cmdTotBKG = "combineCards.py "
@@ -162,6 +222,8 @@ for channel in ["dl", "sl"] :
 
     cmdChannel = "combineCards.py "
     cmdChannelBKG = "combineCards.py "
+    gof_collect = ""
+    gof_collect_labels = ""
     for era in ["2016", "2017", "2018"] :
         if not args.only_era == "none" :
             if not era == args.only_era :
@@ -169,34 +231,58 @@ for channel in ["dl", "sl"] :
 
         for bin in list_bins :
 
-            bin = bin.replace("ERA", era)
-            renamedBin = bin.split("/")[len(bin.split("/"))-1]
+            if university == "TLL" :
+                bin = bin.replace("ERA", era)
+                full_path_card_original = "%s/%s.txt" % (mom_original, bin)
+                renamedBin = bin.split("/")[len(bin.split("/"))-1]
+            elif  "UCL" in university  :
+                full_path_card_original = "%s/%s.txt" % (mom_original, bin)
+                bin = bin.replace("_bbWW_nonres_none", "").replace("outputcard_", "")
+                renamedBin = "%s_%s" % (bin, era)
+            elif  "RWTH" in university  :
+                # bbww_sl_2018_all_boosted_sr_prompt_dnn_node_class_HHGluGlu_NLO
+                full_path_card_original = "%s/%s/%s/datacard.txt" % (mom_original, era, bin)
+                renamedBin = "bbww_%s_%s_%s" % (channel, era, bin)
 
-            full_path_card_original = "%s/%s.txt" % (mom_original, bin)
+
             full_path_card_renamedBin = full_path_card_original
             if not mom == "none" :
-                full_path_card = "%s/%s.txt" % (mom, bin)
-                print(full_path_card)
+                #full_path_card = "%s/%s.txt" % (mom, bin)
+                #print(full_path_card)
                 full_path_card_renamedBin = "%s/%s_renamedBin.txt" % (mom, bin)
 
                 cmd = "combineCards.py "
-                cmd += "%s=%s " % (renamedBin, full_path_card)
+                cmd += "%s=%s " % (renamedBin, full_path_card_original)
                 cmd += ">  %s" % (full_path_card_renamedBin)
                 runCombineCmd(cmd)
 
             if not submit_fitdiag_by_card == "none" :
                 if "law" in submit_fitdiag_by_card :
-                    version = "TLL_%s_data" % renamedBin
-                    #version = "TLL_%s" % renamedBin
+                    version = "%s_%s_data" % (university, renamedBin)
+                    #version = "TLL_%s__data" % renamedBin # missing bkgs
+                    #version = "TLL_%s_data" % renamedBin
+                    #version = "TLL_%s" % renamedBin # blinded
                     cmd = "law run FitDiagnostics "
                     cmd += " --version  %s" % version
                     cmd += " --datacards %s=%s " % (renamedBin, full_path_card_renamedBin)
                     cmd += " --pois r  --unblinded --PullsAndImpacts-custom-args='--X-rtd MINIMIZER_no_analytic' "
-                    cmd += " --FitDiagnostics-no-poll --FitDiagnostics-workflow htcondor --FitDiagnostics-max-runtime 48"
+                    cmd += " --FitDiagnostics-no-poll --FitDiagnostics-workflow htcondor --FitDiagnostics-max-runtime 62"
 
                     ## concentrate results adding to the command
                     if submit_fitdiag_by_card == "law" :
+                        #print(cmd)
                         runCombineCmd(cmd, FolderOut, print_command=True)
+                    elif submit_fitdiag_by_card == "law_gof" :
+                        cmdgof = "law run GoodnessOfFit "
+                        cmdgof += " --version  %s" % version
+                        cmdgof += " --datacards %s=%s " % (renamedBin, full_path_card_renamedBin)
+                        cmdgof += " --parameter-values r=0  --toys 300  --toys-per-task 5  "
+                        cmdgof += " --GoodnessOfFit-no-poll --GoodnessOfFit-workflow htcondor --GoodnessOfFit-tasks-per-job 2 --GoodnessOfFit-max-runtime 16"
+                        print(cmdgof)
+                        # law run PlotGoodnessOfFit --version bbWW_round3 --datacards "''
+                    elif submit_fitdiag_by_card == "law_gof_collect" :
+                        gof_collect += "%s=%s:" % (renamedBin, full_path_card_renamedBin)
+                        gof_collect_labels = "'%s'," % (renamedBin)
                     elif submit_fitdiag_by_card == "law_collect" :
                         # print-satatus 0 is not the root file, so we need to use the actual path to paste
                         #    cmd += " --fetch-output 0" ## the output is not the .root, that does not work
@@ -231,6 +317,7 @@ for channel in ["dl", "sl"] :
                                     runCombineCmd("cp %s %s" % (fileShapes[0], file_final))
 
                         if law_fitdiag_result == "none" : continue
+                        continue
                         # to repeat the coommand does not always work, so we do the plot standalone
                         save_plot = "%s/NLL_JES_%s.pdf" % (FolderOut, renamedBin)
                         only_parameters="CMS*JES*"
@@ -269,13 +356,13 @@ for channel in ["dl", "sl"] :
     cmdChannel += " > %s/datacard_%s.txt" % (mom, channel)
     cmdChannelBKG += " > %s/datacard_%s_BKGonly.txt" % (mom, channel)
     ## if one wants to do a combo card/era
-    if not mom == "none" :
+    if not mom == "none" and 0 > 2 :
         runCombineCmd(cmdChannel)
         runCombineCmd(cmdChannelBKG)
 
 cmdTot += " > %s/datacard.txt" % (mom)
 cmdTotBKG += " > %s/datacard_BKGonly.txt" % (mom)
 ## if one wants to do a combo card/era
-if not mom == "none" :
+if not mom == "none"  and 0 > 2 :
     runCombineCmd(cmdTot)
     runCombineCmd(cmdTotBKG)

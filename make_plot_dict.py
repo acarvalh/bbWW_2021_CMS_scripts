@@ -69,8 +69,10 @@ dictionary = args.output_dict
 only_bkg = args.only_bkg
 only_sig = args.only_sig
 only_chanel = args.only_chanel
+university = args.university
+print(args.university == "LLR" , args.university , "LLR")
 
-if args.university == "TLL" :
+if university == "TLL" :
     list_plots = [
         [
             "dynode",
@@ -110,7 +112,7 @@ if args.university == "TLL" :
         [
             "GGFnode",
             ["PREFIX_ERA_HH_boosted", "PREFIX_ERA_HH_resolved_1b_nonvbf", "PREFIX_ERA_HH_resolved_2b_nonvbf",],
-            "[ ['res 1b'], ['res 2b'], ['b.']]",
+            "[ ['b.'], ['res 1b'], ['res 2b'], ]",
             "[3.5, 17, 28]",
             "HH node (GGF categories)"
         ],
@@ -122,6 +124,176 @@ if args.university == "TLL" :
             "HH node (VBF categories)"
         ],
     ]
+elif university == "LLR" :
+    list_plots = [
+        [
+            "DY_VVVnode",
+            ["DY_VVV_ERA"], # name of bin
+            "[[' ']]",                   # label to write on plot, comas in the inner brackets will make new lines
+            "[0]",                       # x-position of that label
+            "DY + VVV node"              # label of plot (can be latex)
+        ],
+        [
+            "TT_ST_TTVX_Rarenode",
+            ["TT_ST_TTVX_Rare_ERA"],
+            "[ [' '] ]",
+            "[2.5]",
+            "TT + ST + TTVX + Rare node"
+        ],
+        [
+            "GGFnode",
+            ["resolved1b_GGF_ERA", "resolved2b_GGF_ERA", "boosted_GGF_ERA"],
+            "[ ['res 1b'], ['res 2b'], ['b.'],]", #
+            "[6, 21, 32]", #
+            "GGF HH node"
+        ],
+        [
+            "VBFnode",
+            ["resolved1b_VBF_ERA", "resolved2b_VBF_ERA", "boosted_VBF_ERA"],
+            "[ ['res 1b'], ['res 2b'], ['b.']]", #
+            "[4, 16, 24]",
+            "VBF HH node"
+        ],
+        [
+            "Hnode",
+            ["resolved1b_H_ERA", "resolved2b_H_ERA", "boosted_H_ERA"],
+            "[['res 1b'], ['res 2b'], ['boosted']]",
+            "[2, 10, 17.5]",
+            "single H node"
+        ],
+    ]
+
+elif university == "RWTH_SL" :
+    list_plots = [
+        [
+            "WJetsnode",
+            ["bbww_sl_ERA_all_incl_sr_prompt_dnn_node_wjets"], # name of bin
+            "[[' ']]",                   # label to write on plot, comas in the inner brackets will make new lines
+            "[0]",                       # x-position of that label
+            "WJets node"              # label of plot (can be latex)
+        ],
+        [
+            "Othernode",
+            ["bbww_sl_ERA_all_incl_sr_prompt_dnn_node_class_other"], # name of bin
+            "[[' ']]",                   # label to write on plot, comas in the inner brackets will make new lines
+            "[0]",                       # x-position of that label
+            "Other BKG node"              # label of plot (can be latex)
+        ],
+        [
+            "TT_node",
+            ["bbww_sl_ERA_all_incl_sr_prompt_top"],
+            "[ [' '] ]",
+            "[2.5]",
+            "TT noode"
+        ],
+        [
+            "GGFnode",
+            ["bbww_sl_ERA_all_resolved_1b_sr_prompt_dnn_node_class_HHGluGlu_NLO", "bbww_sl_ERA_all_resolved_2b_sr_prompt_dnn_node_class_HHGluGlu_NLO", "bbww_sl_ERA_all_boosted_sr_prompt_dnn_node_class_HHGluGlu_NLO"], #
+            "[ ['res 1b'], ['res 2b'], ['b.'],]", #
+            "[2.5, 18, 28]", #
+            "GGF HH node"
+        ],
+        #[
+        #    "VBFnode",
+        #    ["bbww_sl_ERA_all_resolved_1b_sr_prompt_dnn_node_class_HHVBF_NLO", "bbww_sl_ERA_all_resolved_2b_sr_prompt_dnn_node_class_HHVBF_NLO", "bbww_sl_ERA_all_boosted_sr_prompt_dnn_node_class_HHVBF_NLO"], #
+        #    "[ ['res 1b'], ['res 2b'], ['b.']]", #
+        #    "[5, 22, 37]",
+        #    "VBF HH node"
+        #],
+        [
+            "Hnode",
+            ["bbww_sl_ERA_all_resolved_1b_sr_prompt_dnn_node_H", "bbww_sl_ERA_all_resolved_2b_sr_prompt_dnn_node_H", "bbww_sl_ERA_all_boosted_sr_prompt_dnn_node_H", ],
+            "[['res 1b'], ['res 2b'], ['boosted']]",
+            "[2, 10, 17.5]",
+            "single H node"
+        ],
+    ]
+elif university == "RWTH_DL" :
+    """
+    "bbww_dl_2018_all_boosted_1b_sr_dnn_node_H",
+    "bbww_dl_2018_all_boosted_1b_sr_dnn_node_class_HHGluGlu_NLO",
+    "bbww_dl_2018_all_boosted_1b_sr_dnn_node_class_HHVBF_NLO",
+    "bbww_dl_2018_all_incl_sr_type2_dy_vv",
+    "bbww_dl_2018_all_incl_sr_type2_other",
+    "bbww_dl_2018_all_resolved_1b_sr_dnn_node_H",
+    "bbww_dl_2018_all_resolved_1b_sr_dnn_node_class_HHGluGlu_NLO",
+    "bbww_dl_2018_all_resolved_1b_sr_dnn_node_class_HHVBF_NLO",
+    "bbww_dl_2018_all_resolved_2b_sr_dnn_node_H",
+    "bbww_dl_2018_all_resolved_2b_sr_dnn_node_class_HHGluGlu_NLO",
+    "bbww_dl_2018_all_resolved_2b_sr_dnn_node_class_HHVBF_NLO",
+
+    bbww_dl_2018_all_boosted_1b_sr_type2_dy_vv
+    """
+    list_plots = [
+        [
+            "DYnode",
+            ["bbww_dl_ERA_all_resolved_sr_type2_dy_vv", "bbww_dl_ERA_all_boosted_1b_sr_type2_dy_vv"], # name of bin
+            "[['resolved'], ['boosted']]",                   # label to write on plot, comas in the inner brackets will make new lines
+            "[2, 10]",                       # x-position of that label
+            "DY node"              # label of plot (can be latex)
+        ],
+        [
+            "Othernode",
+            ["bbww_dl_ERA_all_incl_sr_type2_other"], # name of bin
+            "[[' ']]",                   # label to write on plot, comas in the inner brackets will make new lines
+            "[0]",                       # x-position of that label
+            "TT + Other BKG node"              # label of plot (can be latex)
+        ],
+        [
+            "GGFnode",
+            ["bbww_dl_ERA_all_resolved_1b_sr_dnn_node_class_HHGluGlu_NLO", "bbww_dl_ERA_all_resolved_2b_sr_dnn_node_class_HHGluGlu_NLO", "bbww_dl_ERA_all_boosted_1b_sr_dnn_node_class_HHGluGlu_NLO"], #
+            "[ ['res. 1b'], ['res. 2b'], ['b.'],]", #
+            "[6, 20, 32]", #
+            "GGF HH node"
+        ],
+        [
+            "VBFnode",
+            ["bbww_dl_ERA_all_resolved_1b_sr_dnn_node_class_HHVBF_NLO", "bbww_dl_ERA_all_resolved_2b_sr_dnn_node_class_HHVBF_NLO", "bbww_dl_ERA_all_boosted_1b_sr_dnn_node_class_HHVBF_NLO"], #
+            "[ ['res. 1b'], ['res. 2b'], ['b.']]", #
+            "[5, 17, 24]",
+            "VBF HH node"
+        ],
+        [
+            "Hnode",
+            #["bbww_dl_ERA_all_incl_sr_dnn_node_H"],
+            #"[['']]",
+            ["bbww_dl_ERA_all_resolved_1b_sr_dnn_node_H", "bbww_dl_ERA_all_resolved_2b_sr_dnn_node_H", "bbww_dl_ERA_all_boosted_1b_sr_dnn_node_H", ],
+            "[['res 1b'], ['res 2b'], ['boosted']]",
+            "[2, 10, 18]",
+            "single H node"
+        ],
+    ]
+
+elif university == "RWTH_split" :
+    # bbww_sl_ERA_all_resolved_2b_sr_prompt_dnn_node_H
+    #              all_resolved_2b_sr_       dnn_node_H
+    # fitdiagnostics_bbww_sl_2018_all_incl_sr_prompt_type2_other.root
+    # fitdiagnostics_bbww_sl_2018_all_boosted_1b_sr_prompt_dnn_node_H.root
+    #                bbww_sl_2018_all_boosted_1b_sr_prompt_dnn_node_H
+    list_plots = [
+        [
+            "WJetsnode",
+            ["bbww_sl_ERA_all_boosted_sr_prompt_dnn_node_wjets", "bbww_sl_ERA_all_resolved_sr_prompt_dnn_node_wjets"], # name of bin
+            "[['boosted'], ['resolved']]",                   # label to write on plot, comas in the inner brackets will make new lines
+            "[5, 15]",                       # x-position of that label
+            "WJets node"              # label of plot (can be latex)
+        ],
+        [
+            "Othernode",
+            ["bbww_sl_ERA_all_boosted_sr_prompt_dnn_node_class_other", "bbww_sl_ERA_all_resolved_sr_prompt_dnn_node_class_other"], # name of bin
+            "[['boosted'], ['resolved']]",                   # label to write on plot, comas in the inner brackets will make new lines
+            "[5, 15]",                       # x-position of that label
+            "Other BKG node"              # label of plot (can be latex)
+        ],
+        [
+            "TT_node",
+            ["bbww_sl_ERA_all_boosted_sr_prompt_top", "bbww_sl_ERA_all_resolved_sr_prompt_top"],
+            "[['boosted'], ['resolved']]",
+            "[5, 15]",
+            "TT noode"
+        ],
+    ]
+
 
 ff = open(dictionary, "w")
 ff.write(unicode('{\n'))
@@ -134,11 +306,14 @@ for channel in ["dl", "sl"] :
   for teste_class in list_plots :
 
     if channel == "dl" :
-        prefix = "SM_lbn_2l_0tau"
-    if channel == "sl" :
-        prefix = "SM_lbn_1l_0tau"
+        #prefix = "SM_lbn_2l_0tau"
+        prefix = "dl"
         if teste_class[0] == "wjetsnode" :
             continue
+    if channel == "sl" :
+        #prefix = "SM_lbn_1l_0tau"
+        prefix = "sl"
+
 
     if only_bkg :
         if teste_class[0] in ["GGFnode", "VBFnode"] :
@@ -155,17 +330,21 @@ for channel in ["dl", "sl"] :
         skiped = False
         for bin in teste_class[1] :
             if 0 > 1 : skiped = True
-            if channel == "dl" and teste_class[0] == "ttnode" and era == "2017" : skiped = True
-            if channel == "dl" and teste_class[0] == "ttnode" and era == "2016" : skiped = True
-            if channel == "dl" and  teste_class[0] == "wjetsnode" and era == "2016" : skiped = True
-            if channel == "dl" and  teste_class[0] == "wjetsnode" and era == "2017" : skiped = True
-            if channel == "dl" and  teste_class[0] == "wjetsnode" and era == "2018" : skiped = True
-            if channel == "sl" and teste_class[0] == "ttnode" and era == "2016" : skiped = True
-            if channel == "sl" and teste_class[0] == "ttnode" and era == "2017" : skiped = True
-            if channel == "sl" and teste_class[0] == "ttnode" and era == "2018" : skiped = True
-            if channel == "sl" and teste_class[0] == "stnode" and era == "2018" : skiped = True
-            if channel == "sl" and teste_class[0] == "stnode" and era == "2017" : skiped = True
-            if channel == "sl" and teste_class[0] == "stnode" and era == "2016" : skiped = True
+            #if channel == "dl" and teste_class[0] == "ttnode" and era == "2017" : skiped = True
+            #if channel == "dl" and teste_class[0] == "ttnode" and era == "2016" : skiped = True
+            ##
+            #if channel == "sl" and  teste_class[0] == "GGFnode" and era == "2018" : skiped = True
+            #if channel == "sl" and  teste_class[0] == "VBFnode" and era == "2018" : skiped = True
+            #if channel == "sl" and  teste_class[0] == "VBFnode" and era == "2017" : skiped = True
+            #if channel == "sl" and  teste_class[0] == "wjetsnode" and era == "2016" : skiped = True
+            #if channel == "sl" and  teste_class[0] == "wjetsnode" and era == "2017" : skiped = True
+            #if channel == "sl" and  teste_class[0] == "wjetsnode" and era == "2018" : skiped = True
+            #if channel == "sl" and teste_class[0] == "ttnode" and era == "2016" : skiped = True
+            #if channel == "sl" and teste_class[0] == "ttnode" and era == "2017" : skiped = True
+            #if channel == "sl" and teste_class[0] == "ttnode" and era == "2018" : skiped = True
+            #if channel == "sl" and teste_class[0] == "stnode" and era == "2018" : skiped = True
+            #if channel == "sl" and teste_class[0] == "stnode" and era == "2017" : skiped = True
+            #if channel == "sl" and teste_class[0] == "Othernode" and era == "2016" : skiped = True
         if skiped : continue
 
         if ".root" in fitdiagDL :
@@ -179,6 +358,7 @@ for channel in ["dl", "sl"] :
             if not os.path.exists(local_merged) :
                 cmd = "hadd %s " % (fit_hadd)
                 for bin in teste_class[1] :
+                    #bin = bin.replace("bbww_dl_ERA_", "")
                     bin = bin.replace("PREFIX", prefix).replace("ERA", era)
                     cmd += " fitdiagnostics_%s.root" % (bin)
                 print ("cd %s ; %s; cd -" % (fitdiagDL, cmd))
@@ -200,18 +380,35 @@ for channel in ["dl", "sl"] :
         # plot dimensions
         plot_dimensions = """        'minY'               : 0.001,
         'maxY'               : 1000000000000.,
-        'minYerr'            : -1.28,
-        'maxYerr'            : 1.28,
         'useLogPlot'         : True,
         'labelX'             : 'MVA bin #',
         'number_columns_legend' : 3,\n"""
         ff.write(unicode(plot_dimensions))
 
+        if university == "RWTH_DL" :
+            if teste_class[0] == "Othernode" :
+                ff.write(unicode("        'minYerr'            : -0.015,\n" ))
+                ff.write(unicode("        'maxYerr'            : 0.015,\n" ))
+            else :
+                ff.write(unicode("        'minYerr'            : -0.21,\n" ))
+                ff.write(unicode("        'maxYerr'            : 0.21,\n" ))
+        if university == "RWTH_SL" :
+            if teste_class[0] == "Hnode" :
+                ff.write(unicode("        'minYerr'            : -0.11,\n" ))
+                ff.write(unicode("        'maxYerr'            : 0.11,\n" ))
+            else :
+                ff.write(unicode("        'minYerr'            : -0.015,\n" ))
+                ff.write(unicode("        'maxYerr'            : 0.015,\n" ))
+
+
         # categories being lined up in the plot
         align_cats_string = "        'align_cats' : ["
         for catsbins in teste_class[1] :
-            if args.university == "TLL" :
-                catsbins = bin.replace("PREFIX", prefix).replace("ERA", era)
+            #if args.university == "TLL" :
+            ## dl_2018_all_incl_sr_type2_other
+            #catsbins = catsbins.replace("bbww_dl_ERA_", "")
+            catsbins = catsbins.replace("bbww_", "").replace("ERA", era)
+            #catsbins = catsbins.replace("PREFIX", prefix).replace("ERA", era)
             align_cats_string  =  align_cats_string + "'" + catsbins + "',"
         align_cats_string = align_cats_string + "],\n"
         ff.write(unicode(align_cats_string ))
